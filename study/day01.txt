@@ -1,0 +1,92 @@
+2023-01-12 Day01
+
+DataBase(DB) - data의 묶음, 추상적인 용어
+
+DataBaseManagementSystem(DBMS)
+- data를 관리할 수 있는 구체적인 system
+
+장점
+- 대용량 처리가 쉽다.
+- 동시 작업이 가능하다.
+단점
+- query에 능숙해야한다.(배우기가 어렵다.)
+- DB modeling 시 지식과 숙련도가 필요하다.
+
+DBMS의 종류
+1. 오라클(Oracle): 학습용 무료, 기업용 유료, A/S가 좋다, 신뢰도가 높다. -> 대기업/정부기관에서 주로 사용
+2. MySQL: 무료이기에 많은 기업들이 사용함.
+3. 마리아DB 
+...
+
+SQL -> 큰 틀은 비슷하다. So, 하나만 배워놓으면 다른 DBMS를 배우는데 시간이 오래 걸리지 않음.
+
+Oracle 설치 후
+1. sqlplus sys as sysdba
+2. Enter password: 111
+
+계정
+대표적으로 세가지로 분류
+sys -> 모든 명령어에 대한 권한을 갖고 있는 계정
+system -> sys보다는 권한을 덜 갖고 있는 계정
+일반 계정 -> 권한을 부여받은 data(=스키마)만 관리 가능
+(hr,op,he,scott...) -> oracle을 처음 down받으면 생기는 일반 계정들. 안에 data들이 있다.
+
+Schema(스키마)
+- 정리가 잘 되어 있는 표들의 묶음(상태)
+
+IDE(통합 개발 환경)
+- 코딩, 디버깅, 배포 -> 이러한 과정들을 하나의 프로그램에서 수행할 수 있도록 하는 것
+
+DBMS에서 자주 사용하는 IDE
+- SQLDeveloper
+- DBeaver: java를 기반으로 만들어진 IDE
+
+SQL(인터프리터 언어)
+- DBMS와 소통을 하기 위해 사용하는 언어
+- SQL문이라고도 하며 Query문이라고도 한다.
+
+인터프리터 언어(한 줄씩 번역)
+- 한 줄씩 번역이 되고 빈번한 수정이 있을 때 효율적이다.
+- 전체를 실행하지 않고 부분만 실행 가능한 편리한 언어
+- ex) HTML, Python, ...
+
+컴파일 언어(통번역)
+- 일괄 처리를 할 때 사용하는 방식
+- ex) C, JAVA, ...
+
+Table A -> A라는 table
+번호	이름	나이
+1	홍길동	20 -> 가로가 행(Low), 1명에 대한 모든 정보
+2	김길동	30
+3	독고길동	28
+세로가 열(column), 특정한 항목에 대한 정보
+
+ex) 각기 다른 Table에서 똑같은 data가 있는 경우
+Table A -> 고객 아이디, 고객명, 연락처, 주소
+
+Table B -> 주문번호, 제품명, 수량, 주소, 고객명
+- Table간의 관계가 있다 -> 관계형 DB(RDBMS)
+
+내용
+- 명령어 입력 후 ;(세미콜론)을 꼭 붙여야한다.
+- conn: connect
+- alter user ... account unlock; -> lock된 일반 계정을 unlock한다.
+- alter user hr identified by ...; -> 비밀번호를 바꾼다.
+- window + r -> 실행키
+- cmd: 관리자 프로그램
+- driver: DB와 컴퓨터를 연결하는 통로
+- SELECT * FROM EMPLOYEES; -> 모든 정보에 대한 column에 접근 가능
+
+
+
+
+
+
+
+
+
+
+
+
+
+

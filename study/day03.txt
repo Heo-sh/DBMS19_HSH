@@ -1,0 +1,152 @@
+2023-01-19 day03
+
+Modeling
+- 추상적인 주제를 DataBase 모델에 맞게 설계하는 것
+1. 요구사항 분석: 클라이언트가 원하는 요구사항을 맞춰주는 것
+	- ex) 회원, 상품, 주문, 재고관리, ...
+2. 개념적 설계 (개념 모델링): 데이터베이스에 테이블로 어떻게 만들지
+			(어떤 내용이 들어갈 지)
+			모델링을 생각해보는 것
+	- ex) 	회원	  주문		상품
+	--------------------------------------------------
+	--------------------------------------------------
+		ID	주문번호		상품번호
+		PW	ID		상품명
+		이름	상품번호		가격
+		주소	주문날짜		재고량
+		이메일
+		생일 
+3. 논리적 설계 (논리 모델링): 어떤 컬럼을 PK로 할 것이고, 어떤 컬럼을 FK로
+			사용할건지 정확하게 정하는 것
+	- ex) 	회원	  주문		상품
+	--------------------------------------------------
+		ID(PK)	주문번호(PK)	상품번호(PK)
+	--------------------------------------------------
+		PW	ID(FK)		상품명
+		이름	상품번호		가격
+		주소	주문날짜		재고량
+		이메일
+		생일 
+	※ 후보키: PK로 할 수 '있는' 키
+	※ 조합키: PK로 설정된 컬럼이 두 개일 때 두 개를 조합해서
+		중복되지 않으면 중복이 아닌 걸로 친다.
+		- ex) 결제정보	<- 은행이 같으나 계좌번호가 다르면
+		--------------------     중복이 아닌 걸로 된다.
+		       계좌번호(PK)
+		       은행명(PK)
+		--------------------
+		       예금주
+		       CVC
+4. 물리적 설계 (물리 모델링): 컬럼명과 타입을 어떻게 줘야할 지 생각해보는 것
+	- ex) 	USER	
+	-------------------
+		USER_ID -> VARCHAR2(100)(PK)	
+	-------------------
+		USER_PW -> VARCHAR2(200) 	
+		USER_NAME -> VARCHAR2(200)	
+		USER_ADDRESS -> VARCHAR2(300)	
+		USER_EMAIL -> VARCHAR2(300)
+		USER_BIRTH -> DATE
+ 
+	- ex)	ORDER		
+	----------------------
+		ORDER_NUM -> NUMBER(PK)	
+	----------------------	
+		USER_ID (FK) -> VARCHAR2(100) ※ PK와 FK의 데이터길이가 같아야한다.	
+		PRODUT_NUM (FK) -> NUMBER		
+		ORDER_DATE -> DATE		
+
+	- ex)	PRODUCT
+	-----------------------
+		PRODUCT_NUM -> NUMBER(PK)
+	-----------------------
+		PRODUCT_NAME -> VARCHAR2(300)
+		PRODUCT_PRICE -> NUMBER
+		PRODUCT_COUNT -> NUMBER
+5. 구현: 테이블을 설계할 때 모델링을 먼저 하고 CREATE로 테이블을 만들면
+          실수를 줄일 수 있다.
+	
+EXAMPLE 1
+1. 요구사항
+꽃 테이블과 화분 테이블 2개가 필요하고, 꽃을 구매할 때 화분도 같이 구매한다.
+꽃에는 이름, 색깔, 가격이 있고 화분에는 제품번호, 색깔, 모양, 꽃 이름이 있다.
+꽃(FLOWER) - FLOWER_NAME(PK), FLOWER_COLOR, FLOWER_PRICE
+화분(POT) - POT_NUM, POT_COLOR, POT_PATTERN, FLOWER_NAME(FK)
+
+EXAMPLE 2
+1. 요구사항
+애완동물 테이블과 주인 테이블
+주인 테이블: ID, 이름, 나이, 주소
+애완동물 테이블: PIN, 이름, 나이, 주인이름
+
+PATNER: PARTNER_ID(PK) -> VARCHAR2(200)
+	PARTNER_NAME -> VARCHAR2(300)
+	PARTNER_AGE -> NUMBER
+	PARTNER_ADDRESS -> VARCHAR2(500)
+PET: PET_PIN(PK) -> NUMBER
+      PET_NAME -> VARCHAR2(300)
+      PET_AGE -> NUMBER
+      PARTNER_ID(FK) -> VARCHAR2(200)
+
+SQL문
+- DML(DataManipulation Language): 데이터 조작어
+	- SELECT: 조회(검색, 출력)
+		- SELECT 컬럼명1, 컬럼명2, 컬럼명3, ... FROM 테이블명
+		  WHERE 조건식;
+	- INSERT: 추가
+		- INSERT INTO 테이블명(컬럼명1, 컬럼명2, ...) VALUES(값1, 값2, ...);
+		- INSERT INTO 테이블명 VALUES(값1, 값2, ...);
+	- UPDATE: 수정
+		- UPDATE 테이블명
+		  SET 기존 컬럼명 = 새로운 값
+		  WHERE 조건식;
+	- DELETE: 삭제 / TRUNCATE: 데이터를 다 삭제하는 것
+		- DELETE는 1 행씩 지운다
+		- DELETE FROM 테이블명
+		  WHERE 조건식;
+※ 조건식: 참(TRUE) 또는 거짓(FALSE) 둘 중 하나의 결과가 나오는 식
+
+※ 사원번호 - EMPLOYEES_ID
+   이름 - FIRST_NAME
+   성 - LAST_NAME
+   이메일 - EMAIL
+   전화번호 - PHONE_NUMBER
+   입사날짜 - HIRE_DATE
+   직종 - JOB_ID
+   급여 - SALARY
+   보너스비율 - COMMISSION_PCT
+   상사의 사번 - MANAGER_ID
+   부서번호 - DEPARTMENT_ID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
