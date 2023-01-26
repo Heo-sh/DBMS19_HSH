@@ -1,0 +1,106 @@
+SELECT * FROM PLAYER;
+
+--SELECT는 단순히 데이터를 조회하는 역할이기 때문에 ROLLBACK을 쓸 일이 거의 없다.
+--INSERT, UPDATE, DELETE는 데이터베이스에 영향을 주기 때문에 ROLLBACK을 많이 사용한다.
+--COMMIT 후에 ROLLBACK은 소용이 없다.
+
+--PLAYER 테이블에서 TEAM_ID가 'K01'인 선수들의 이름들을 내 이름으로 바꾸기
+UPDATE PLAYER
+SET PLAYER_NAME = '허성혁'
+WHERE TEAM_ID = 'K01';
+
+SELECT * FROM PLAYER WHERE TEAM_ID = 'K01';
+
+--PLAYER 테이블에서 POSITION이 'MF'인 선수 삭제하기
+--DELETE PLAYER
+--WHERE POSITION = 'MF';
+DELETE FROM PLAYER
+WHERE "POSITION" = 'MF';
+
+SELECT * FROM PLAYER;
+
+--PLAYER 테이블에서 HEIGHT가 180이상인 선수 삭제하기
+DELETE FROM PLAYER
+WHERE HEIGHT >= 180; --부등호(<, >)가 항상 앞에 와야한다.
+
+SELECT * FROM PLAYER WHERE HEIGHT >= 180;
+
+--별칭
+--사용하는 이유: 다른 문서로 저장을 해 전달하는 방식에서 나라별 언어로 바꿔줄 수 있다. -> 상대방이 알아보기가 쉽다.
+SELECT PLAYER_ID AS "선수 번호" FROM PLAYER;
+SELECT PLAYER_ID "선수 번호" FROM PLAYER;
+
+--PLAYER 테이블에서 BACK_NO를 "등 번호", NICKNAME을 "선수 별명"으로 바꿔서 검색
+SELECT BACK_NO "등 번호", NICKNAME "선수 별명" FROM PLAYER;
+
+--두 개 이상의 테이블에서 각각의 컬럼을 조회하려고 한다면 어떤 테이블에서 온 컬럼인지 확실하게 적어줘야한다.
+SELECT P.TEAM_ID, T.TEAM_ID FROM PLAYER P, TEAM T;
+--SELECT PLAYER.TEAM_ID, TEAM.TEAM_ID FROM PLAYER, TEAM;
+
+SELECT T.TEAM_ID "팀 아이디", S.ADDRESS "주소", T.TEL
+--TEAM의 TEAM_ID의 수와 STADIUMD의 ADDRESS의 항목 수를 곱한 만큼의 항목이 늘어났다.
+FROM STADIUM S, TEAM T;
+
+SELECT * FROM TEAM;
+SELECT * FROM STADIUM;
+
+--누구누구(이름: PLAYERNAME)의 별명은 뭐뭐(별명: NICKNAME)다.
+SELECT PLAYER_NAME || '의 별명은 ' || NICKNAME || '이다.'
+FROM PLAYER;
+
+--EMPLOYEES 테이블에서 성과 이름을 붙혀서 출력
+SELECT FIRST_NAME || ' ' || LAST_NAME FROM EMPLOYEES;
+
+--OO의 포지션은 OO이다 를 "작전회의"라는 별칭으로 출력하기
+SELECT PLAYER_NAME || '의 포지션은 ' || "POSITION" || '이다.' "작전회의"
+FROM PLAYER;
+
+--사원테이블에서 사원들의 이름 중 M으로 시작하는 사원의 정보를 사번, 이름, 직종 순으로 출력
+SELECT EMPLOYEE_ID, FIRST_NAME, JOB_ID
+FROM EMPLOYEES
+WHERE FIRST_NAME LIKE 'M%';
+
+--사원테이블에서 이름이 d로 끝나는 사원의 사번, 이름, 직종 순으로 출력 -> 대소문자 구분을 잘해줘야함.
+SELECT EMPLOYEE_ID, FIRST_NAME, JOB_ID
+FROM EMPLOYEES
+WHERE FIRST_NAME LIKE '%d';
+
+--사원테이블에서 이름에 a가 포함되어있는 사원의 정보를 이름, 직종 순으로 출력
+SELECT FIRST_NAME, JOB_ID
+FROM EMPLOYEES
+WHERE FIRST_NAME LIKE '%a%';
+
+--이름의 첫글자가 M이면서 총 7글자의 이름을 가진 사원의 정보를 사번, 이름 순으로 출력
+SELECT EMPLOYEE_ID "사번", FIRST_NAME "이름"
+FROM EMPLOYEES
+WHERE FIRST_NAME LIKE 'M______';
+
+--EMPLOYEE 테이블에서 이름의 세번째 글자에 a가 들어가는 사원들의 정보를 사번, 이름순으로 출력
+SELECT EMPLOYEE_ID "사번", FIRST_NAME "이름"
+FROM EMPLOYEES
+WHERE FIRST_NAME LIKE '__a%';
+
+--EMPLOYEE 테이블에서 이름이 H로 시작하면서 6글자 이상인 사원들의 정보를 사번, 이름순으로 출력
+SELECT EMPLOYEE_ID "사번", FIRST_NAME "이름"
+FROM EMPLOYEES
+WHERE FIRST_NAME LIKE 'H_____%';`
+
+--PLAYER 테이블에서 김씨 성을 가진 선수이름 출력
+SELECT PLAYER_NAME
+FROM PLAYER
+WHERE PLAYER_NAME LIKE '김%';
+
+--PLAYER 테이블에서 김씨와 이씨 성을 가진 선수이름 검색하기
+SELECT PLAYER_NAME
+FROM PLAYER
+WHERE PLAYER_NAME LIKE '김%' OR PLAYER_NAME LIKE '이%';
+
+--PLAYER 테이블에서 이씨가 아닌 사람들의 이름을 조회하기 <- 부정의 의미로 NOT을 사용
+SELECT PLAYER_NAME
+FROM PLAYER
+WHERE NOT PLAYER_NAME LIKE '이%';
+
+--PLAYER 테이블에서 김씨 성을 가지고 이름이 세글자인 사람을 제외하고 선수 이름을 검색하기
+SELECT PLAYER_NAME
+FROM PLAYER
+WHERE NOT PLAYER_NAME LIKE '김__';
