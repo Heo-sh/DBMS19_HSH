@@ -1,0 +1,122 @@
+SELECT * FROM TBL_CAR;
+
+INSERT INTO TBL_CAR VALUES(230131001, 'BMW', 'WHITE', 5000);
+INSERT INTO TBL_CAR VALUES(230131002, 'BENZ', 'BLACK', 7000);
+INSERT INTO TBL_CAR VALUES(230131003, 'PORCHE', 'RED', 10000);
+INSERT INTO TBL_CAR VALUES(230131005, NULL, 'WHITE', 5000);\
+
+DELETE FROM TBL_CAR WHERE BRAND IS NULL;
+
+--NOT NULL 제약조건 추가하기
+ALTER TABLE TBL_CAR MODIFY BRAND NOT NULL;
+
+--NOT NULL 제약조건 삭제하기
+ALTER TABLE TBL_CAR DROP CONSTRAINT ;
+
+--PLAYER 테이블에서 POSITION이 NULL인 선수 검색
+SELECT * FROM PLAYER WHERE "POSITION" IS NULL;
+SELECT * FROM PLAYER WHERE "POSITION" IS NOT NULL;
+
+--PLAYER 테이블에서 POSITION이 NULL이면 '미정'으로 결과 출력하기
+--NVL(컬럼명, NULL일 때 대신 넣을 값)
+--NVL2(컬럼명, NULL 아닐 때 넣을 값, NULL일 때 넣을 값)
+SELECT PLAYER_NAME "선수이름", NVL("POSITION", '미정')"포지션" FROM PLAYER WHERE "POSITION" IS NULL;
+SELECT PLAYER_NAME "선수이름", NVL2("POSITION", '확정', '미정') AS "포지션" FROM PLAYER;
+
+--PLAYER 테이블에서 NATION이 NULL이 아니면 등록, NULL이 아니면 미등록으로 변경하고, 이름과 같이 출력
+SELECT PLAYER_NAME, NVL2(NATION, '등록', '미등록') FROM PLAYER;
+
+------------------------------------------------------------------------------
+--1. 숫자형 함수
+--몫 구하기
+SELECT SALARY, SALARY/2 FROM EMPLOYEES;
+
+--나머지 구하기
+--함수는 우리가 직접 만든 테이블이 아닌 DUAL이라는 가상의 테이블에서 확인 가능
+SELECT MOD(10, 3) FROM DUAL;
+
+--사원테이블에서 사번, 이름을 출력하되 짝수 사번을 가진 사원들의 정보만 출력
+SELECT EMPLOYEE_ID, FIRST_NAME FROM EMPLOYEES WHERE MOD(EMPLOYEE_ID, 2) = 0;
+
+--반올림 함수 ROUND()
+SELECT ROUND(3.141592) FROM DUAL;
+SELECT ROUND(3.141592), ROUND(3.141592, 4) FROM DUAL; --원하는 자릿수 표현가능
+
+--버림 함수 TRUNC()
+SELECT TRUNC(3.141592) FROM DUAL;
+SELECT TRUNC(3.141592), TRUNC(3.141592, 4) FROM DUAL;
+
+--제곱을 구하는 함수 POWER(밑값, 지수)
+SELECT POWER(3,2) FROM DUAL; --3의 2제곱
+
+--데이터의 길이를 구해주는 함수 LENGTH()
+SELECT LENGTH('JHON') FROM DUAL; --글자수: 4
+
+--EMPLOYEES 테이블에서 이름의 길이가 6 이상인 사원의 사번, 이름을 조회
+SELECT EMPLOYEE_ID, FIRST_NAME FROM EMPLOYEES WHERE LENGTH(FIRST_NAME) >= 6;
+
+--최근접 정수 구하기
+SELECT CEIL(3.14) FROM DUAL;
+SELECT CEIL(3.14), CEIL(-3.14) FROM DUAL;
+
+--양수면 1, 0이면 0, 음수면 -1을 반환하는 함수
+SELECT SIGN(234), SIGN(0), SIGN(-123) FROM DUAL;
+------------------------------------------------------------------------------
+--2.문자함수
+
+--값을 대문자로 바꿔주는 함수 UPPER()
+SELECT UPPER('abc') FROM DUAL;
+SELECT UPPER('good mornig') FROM DUAL;
+
+--EMPLOYEE 테이블의 사원의 모든 이름을 대문자로 표기
+SELECT UPPER(FIRST_NAME) FROM EMPLOYEES;
+
+--EMPLOYEE 테이블에서  michael이라는 이름의 사원에 대한 사번, 이름, 직종, 입사일 검색
+--테이블에 데이터가 어떠한 형식으로 들어가 있는 지 모를 때 데이터 형식을 통일하여 검색할 때 사용하면 좋다.
+SELECT EMPLOYEE_ID, FIRST_NAME, JOB_ID, HIRE_DATE
+FROM EMPLOYEES
+WHERE UPPER(FIRST_NAME) = UPPER('michael');
+
+--소문자로 바꿔주는 함수 LOWER()
+SELECT LOWER('ABC') FROM DUAL;
+
+--원하는 문자열을 잘라서 반환하는 함수 SUBSTR()
+SELECT SUBSTR('GOOD MORNING', 8) FROM DUAL; --띄어쓰기도 문자길이에 포함되기 때문에 RNING가 출력이 된다.
+--8번째 뒤로 2개의 글자만 잘라서 검색
+SELECT SUBSTR('GOOD MORNING', 8, 2) FROM DUAL; 
+
+--필요한 문장을 교체해주는 함수 REPLACE()
+SELECT REPLACE('GOOD MORNING', 'GOOD', 'HI') FROM DUAL;
+
+--부서번호가 50번인 사원들의 이름을 출력하되, 이름 중 'el'을 모두 '**'로 대체 출력
+SELECT REPLACE(FIRST_NAME, 'el', '**')
+FROM EMPLOYEES 
+WHERE DEPARTMENT_ID = 50;
+
+--EMPLOYEES 테이블에서 이름과 입사일만 출력
+SELECT FIRST_NAME, SUBSTR(HIRE_DATE, 7) FROM EMPLOYEES;
+
+--첫 글자를 대문자로 변환하는 함수 INITCAP()
+--공백이나 /를 구분자로 인식하여 변환한다.
+SELECT INITCAP('good morning') FROM DUAL;
+SELECT INITCAP('good/morning') FROM DUAL;
+---------------------------------------------------------------------
+--3. 날짜 함수
+--현재 날짜를 기억하는 키워드 = SYSDATE
+SELECT SYSDATE FROM DUAL;
+
+--1) 특정 날짜에 개월 수를 더해주는 함수 ADD_MONTHS(특정 날짜, 더할 개월 수)
+SELECT SYSDATE, ADD_MONTHS(SYSDATE, 2) FROM DUAL;
+
+--EMPLOYEES 테이블에서 모든 사원의 입사일로부터 6개월 뒤 날짜를 이름, 입사일, 6개월 뒤 날짜 순으로 출력
+SELECT FIRST_NAME, HIRE_DATE, ADD_MONTHS(HIRE_DATE, 6)
+FROM EMPLOYEES;
+
+--2) 두 날짜 사이의 개월 수를 구해주는 함수 MONTHS_BETWEEN(최근, 옛날)
+SELECT MONTHS_BETWEEN(SYSDATE, HIRE_DATE), HIRE_DATE FROM EMPLOYEES;
+
+--사원들의 이름, 입사일, 입사 후 오늘까지의 개월수를 조회하되, 입사기간이 200개월 이상인
+--사람만 출력하고 입사 개월수는 소수점 이하 한자리까지만 버림하여 출력
+SELECT FIRST_NAME, HIRE_DATE, TRUNC(MONTHS_BETWEEN(SYSDATE, HIRE_DATE),1) "MONTHS"
+FROM EMPLOYEES
+WHERE MONTHS_BETWEEN(SYSDATE, HIRE_DATE) >= 200;
