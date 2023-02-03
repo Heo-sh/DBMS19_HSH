@@ -70,6 +70,7 @@ Table B -> 주문번호, 제품명, 수량, 주소, 고객명
 내용
 - 명령어 입력 후 ;(세미콜론)을 꼭 붙여야한다.
 - conn: connect
+    - CONN 이름/비밀번호
 - alter user ... account unlock; -> lock된 일반 계정을 unlock한다.
 - alter user hr identified by ...; -> 비밀번호를 바꾼다.
 - window + r -> 실행키
